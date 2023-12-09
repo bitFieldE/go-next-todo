@@ -12,7 +12,7 @@ services:
       POSTGRES_HOST: $DATABASE_HOST
     volumes:
       - psql-db-data:/var/lib/postgresql/data
-      - ./api/db/init:/docker-entrypoint-initdb.d
+      - ./api/infrastructure/db/init:/docker-entrypoint-initdb.d
     ports:
       - "$DATABASE_PORT:$DATABASE_PORT"
   api:
@@ -25,19 +25,19 @@ services:
       - db
     ports:
       - "$API_PORT:$CONTAINER_PORT"
-#   client:
-#     build:
-#       context: ./client
-#       args:
-#         WORKDIR: $WORKDIR
-#         CONTAINER_PORT: $CONTAINER_PORT
-#         API_URL: "http://localhost:$API_PORT"
-#     volumes:
-#       - ./client:/$WORKDIR
-#     command: yarn dev
-#     ports:
-#       - "$CLIENT_PORT:$CONTAINER_PORT"
-#     depends_on:
-#       - API
+  client:
+    build:
+      context: ./client
+      args:
+        WORKDIR: $WORKDIR
+        CONTAINER_PORT: $CONTAINER_PORT
+        API_URL: "http://localhost:$API_PORT"
+    volumes:
+      - ./client:/$WORKDIR
+    command: pnpm dev
+    ports:
+      - "$CLIENT_PORT:$CONTAINER_PORT"
+    depends_on:
+      - api
 volumes:
   psql-db-data:
