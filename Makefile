@@ -5,3 +5,5 @@ build-client:
 	docker-compose run --rm client build
 build-all:
 	docker-compose build
+up:
+	docker-compose up
