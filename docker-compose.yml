@@ -1,0 +1,43 @@
+version: '3'
+services:
+  db:
+    image: postgres:15.1-alpine
+    container_name: db
+    environment:
+      TZ: Asia/Tokyo
+      PGTZ: Asia/Tokyo
+      POSTGRES_PASSWORD: $DATABASE_PASSWORD
+      POSTGRES_USER: $DATABASE_USERNAME
+      POSTGRES_DB: $DATABASE_NAME
+      POSTGRES_HOST: $DATABASE_HOST
+    volumes:
+      - psql-db-data:/var/lib/postgresql/data
+      - ./api/db/init:/docker-entrypoint-initdb.d
+    ports:
+      - "$DATABASE_PORT:$DATABASE_PORT"
+  api:
+    container_name: api
+    build:
+      context: ./api
+    volumes:
+      - ./api:/github.com/bitFieldE/go-next-todo/api
+    links:
+      - db
+    ports:
+      - "$API_PORT:$CONTAINER_PORT"
+#   client:
+#     build:
+#       context: ./client
+#       args:
+#         WORKDIR: $WORKDIR
+#         CONTAINER_PORT: $CONTAINER_PORT
+#         API_URL: "http://localhost:$API_PORT"
+#     volumes:
+#       - ./client:/$WORKDIR
+#     command: yarn dev
+#     ports:
+#       - "$CLIENT_PORT:$CONTAINER_PORT"
+#     depends_on:
+#       - API
+volumes:
+  psql-db-data:
