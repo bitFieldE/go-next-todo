@@ -1,0 +1,13 @@
+output = "models"
+wipe = "true"
+debug = "true"
+
+[psql]
+dbname="go_next_api"
+user="postgres"
+host="db"
+pass="password"
+port="5432"
+sslmode="disable"
+schema = "public"
+whitelist=[]
