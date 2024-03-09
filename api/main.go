@@ -1,13 +1,13 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/bitFieldE/go-next-todo/api/config"
+	"github.com/bitFieldE/go-next-todo/api/infrastructure/router"
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello Gopher",
-		})
-	})
-	r.Run()
+	router.InitRouter(r)
+	r.Run(":" + config.Server.Port)
 }

@@ -1,9 +1,10 @@
-FROM golang:1.21.3-alpine as dev
+FROM golang:1.22.0-alpine as base
 
 COPY . /github.com/bitFieldE/go-next-todo/api
 WORKDIR /github.com/bitFieldE/go-next-todo/api
 
-ENV GO111MODULE=on
+ENV GO111MODULE=on \
+    GO_ENV=dev
 
 COPY *.go ./
 COPY go.mod go.sum ./
