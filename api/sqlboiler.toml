@@ -1,6 +1,7 @@
 output = "models"
 wipe = "true"
 debug = "true"
+no-tests = "true"
 
 [psql]
 dbname="go_next_api"
