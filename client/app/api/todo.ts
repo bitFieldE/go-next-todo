@@ -10,13 +10,12 @@ export const getAllTodos = async (): Promise<Todo[]> => {
   return todos;
 };
 
-export const getTodo = async(id: string):Promise<Todo> => {
+export const getTodo = async(id: string): Promise<Todo> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/todos/${id}`, {
     method: 'GET',
     cache: "no-store",
   });
 
-  //await new Promise((resolve) => setTimeout(resolve, 1000));
   const todo = await response.json();
   return todo;
 };
@@ -24,6 +23,19 @@ export const getTodo = async(id: string):Promise<Todo> => {
 export const addTodo = async (content: string): Promise<Todo> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/todos`,{
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({content: content}),
+  })
+  const todo: Todo = await response.json()
+
+  return todo
+};
+
+export const updateTodo = async (id: string, content: string): Promise<Todo> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/todos/${id}`,{
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

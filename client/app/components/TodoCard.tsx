@@ -1,7 +1,7 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import { Todo } from "../types/todo";
-import { deleteTodo, getTodo } from "../api/todo";
+import { deleteTodo, updateTodo } from "../api/todo";
 import { useRouter } from "next/navigation";
 
 interface TodoProps {
@@ -9,6 +9,8 @@ interface TodoProps {
 }
 
 const TodoCard = ({todo}: TodoProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTaskTitle, setEditedTaskTitle] = useState(todo.content);
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -17,16 +19,33 @@ const TodoCard = ({todo}: TodoProps) => {
   }
 
   const handleEdit = async () => {
-    const data = await getTodo(todo.id)
-    console.log(data)
-  }
+    setIsEditing(true);
+  };
+
+  const handleSave = async () => {
+    await updateTodo(todo.id, editedTaskTitle);
+    setIsEditing(false);
+    router.refresh();
+  };
 
   return (
     <li key={todo.id} className="item">
-      <span>{todo.content}</span>
+      {isEditing ? (
+        <input
+          type="text"
+          value={editedTaskTitle}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setEditedTaskTitle(e.target.value)
+          }
+        />
+      ) : (<span>{todo.content}</span>)}
       <div>
-        <button onClick={handleEdit}>EDIT</button>
-        <button onClick={handleDelete}>DELETE</button>
+        {isEditing ? (
+          <button className="text-green-500 mr-3" onClick={handleSave}>SAVE</button>
+        ) : (
+          <button className="text-green-500 mr-3" onClick={handleEdit}>EDIT</button>
+        )}
+        <button className="text-red-500" onClick={handleDelete}>DELETE</button>
       </div>
     </li>
   )

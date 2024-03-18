@@ -28,7 +28,7 @@ func InitRouter(r *gin.Engine) {
 		namespace.GET("/todos/:id", handler.GetTodo)
 		namespace.GET("/top", handler.HealthCheck)
 		namespace.POST("/todos", handler.CreateTodo)
-		namespace.PUT("/todos", handler.UpdateTodo)
+		namespace.PUT("/todos/:id", handler.UpdateTodo)
 		namespace.DELETE("/todos/:id", handler.DeleteTodo)
 	}
 
