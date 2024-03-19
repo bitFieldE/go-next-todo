@@ -9,7 +9,7 @@ interface TodoListProps {
 
 const TodoList = ({todos}: TodoListProps) => {
   return (
-    <ul className="items">
+    <ul className="space-y-3">
       {todos.map((todo) => (
         <TodoCard key={todo.id} todo={todo} />
       ))}

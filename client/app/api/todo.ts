@@ -2,6 +2,7 @@ import { Todo } from '../types/todo'
 
 export const getAllTodos = async (): Promise<Todo[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_LOCALHOST_URL}/api/v1/todos`, {
+    method: 'GET',
     cache: 'no-store',
   });
   const data = await response.json();
@@ -13,9 +14,7 @@ export const getAllTodos = async (): Promise<Todo[]> => {
 export const getTodo = async(id: string): Promise<Todo> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/todos/${id}`, {
     method: 'GET',
-    cache: "no-store",
   });
-
   const todo = await response.json();
   return todo;
 };

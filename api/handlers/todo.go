@@ -65,7 +65,7 @@ func GetTodo(c *gin.Context) {
 }
 
 func UpdateTodo(c *gin.Context) {
-	form := models.Todo{}
+	formData := models.Todo{}
 	db, err := db.OpenDB()
 	if err != nil {
 		log.Fatal("Unabled to open database on update:", err)
@@ -78,12 +78,12 @@ func UpdateTodo(c *gin.Context) {
 		return
 	}
 
-	if err := c.ShouldBind(&form); err != nil {
+	if err := c.ShouldBind(&formData); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	todo, _ := models.FindTodo(c.Request.Context(), db, id)
-	todo.Content = form.Content
+	todo.Content = formData.Content
 	todo.Update(c.Request.Context(), db, boil.Infer())
 
 	c.IndentedJSON(http.StatusOK, gin.H{"todo": todo})
